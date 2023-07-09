@@ -1,0 +1,35 @@
+{
+    "name": "@lindeneg/scaffold-core",
+    "description": "a plopjs wrapper to build scaffolding cli's",
+    "version": "0.0.0",
+    "repository": "git@github.com:lindeneg/scaffold-core.git",
+    "homepage": "https://github.com/lindeneg/scaffold-core",
+    "author": "Christian Lindeneg",
+    "license": "MIT",
+    "main": "./dist/esm/index.mjs",
+    "module": "./dist/esm/index.mjs",
+    "types": "./dist/types/index.d.ts",
+    "scripts": {
+        "build": "yarn run build:js && yarn run build:types",
+        "build:js": "rollup -c",
+        "build:types": "tsc --project ./tsconfig-types.json",
+        "lint": "prettier \"src/**\" --ignore-unknown --write",
+        "test": "echo Error: no test specified"
+    },
+    "dependencies": {
+        "plop": "3.1.2",
+        "chalk": "5.2.0",
+        "handlebars": "4.4.3",
+        "minimist": "1.2.6"
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "22.0.2",
+        "@rollup/plugin-node-resolve": "14.1.0",
+        "@types/node": "17.0.25",
+        "prettier": "2.8.0",
+        "rollup": "2.79.1",
+        "rollup-plugin-cleaner": "1.0.0",
+        "rollup-plugin-typescript2": "0.34.1",
+        "typescript": "4.9.5"
+    }
+}
