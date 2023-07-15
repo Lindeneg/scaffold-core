@@ -5,6 +5,7 @@ export { default as extendAction } from './action/extend-action';
 export { default as createGenerator } from './generator/create-generator';
 export { default as createModule } from './module/create-module';
 export { default as createPackageManager } from './package-manager/create-package-manager';
+export { default as packageManager } from './package-manager/defaults';
 export { default as createTemplate } from './template/create-template';
 
 export * from './action/logic';

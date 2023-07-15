@@ -22,16 +22,11 @@ const mergePresetsWithOptions = <TPresets extends Record<string, any>, TOptions 
 
     Object.keys(options).forEach((key) => {
         visited.add(key);
-        const val = options[key];
         const pre = presets[key];
-        const preUndefined = typeof pre === 'undefined';
+        const val = options[key];
+        const typeofPre = typeof pre;
 
-        if (Array.isArray(val) && (preUndefined || Array.isArray(pre))) {
-            result[key] = [...(pre || []), ...val];
-            return;
-        }
-
-        if (typeof val === 'object' && (preUndefined || typeof pre === 'object')) {
+        if (typeof val === 'object' && (typeofPre === 'undefined' || typeofPre === 'object')) {
             result[key] = {
                 ...(pre || {}),
                 ...val,
@@ -39,7 +34,7 @@ const mergePresetsWithOptions = <TPresets extends Record<string, any>, TOptions 
             return;
         }
 
-        result[key] = options[key];
+        result[key] = val;
     });
 
     Object.keys(presets).forEach((key) => {
@@ -68,12 +63,13 @@ const createTemplate = <TData extends Record<string, any>, TPartials extends rea
               }, {} as ScaffoldPartialObject<TPartials>),
 
         addFile(path, payload) {
+            const parsedData = safeStringsOnly(mergePresetsWithOptions(data, payload));
             return [
                 {
                     type: 'add',
                     templateFile,
                     path: getFileName(path, templateFile),
-                    data: safeStringsOnly(mergePresetsWithOptions(data, payload)),
+                    data: parsedData,
                 },
             ];
         },

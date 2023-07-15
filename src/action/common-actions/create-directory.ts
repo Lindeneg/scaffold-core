@@ -3,15 +3,16 @@ import createAction from '../create-action';
 import logger from '../../logger';
 
 interface CreateDirectoryPayload {
-    dirPath: string;
+    dirPath?: string;
+    dirPaths?: string[];
     recursive?: boolean;
 }
 
-export default createAction<CreateDirectoryPayload>('create-directory', async (_, { dirPath, recursive = false }) => {
+const createDirectory = async (dirPath: string, recursive = false) => {
     try {
         await fs.mkdir(dirPath, { recursive });
 
-        return 'successful';
+        return '';
     } catch (err) {
         const msg = 'failed to create directory';
 
@@ -25,4 +26,15 @@ export default createAction<CreateDirectoryPayload>('create-directory', async (_
 
         throw msg;
     }
+};
+
+export default createAction<CreateDirectoryPayload>('create-directory', async (_, payload) => {
+    if (Array.isArray(payload.dirPaths)) {
+        await Promise.all(payload.dirPaths.map((p) => createDirectory(p)));
+        return 'successful';
+    }
+
+    if (!payload.dirPath) throw 'no directory path provided';
+
+    return createDirectory(payload.dirPath, payload.recursive);
 });

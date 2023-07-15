@@ -155,7 +155,7 @@ export const initializeGenerator = (
                 actions,
             });
 
-            return [...actions];
+            return [...actions, { type: 'generator-complete', message: 'Generator Done!' }];
         },
     });
 };
