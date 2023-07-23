@@ -1,7 +1,10 @@
 import logger from '../../logger';
 import createAction from '../create-action';
 import { asyncExec } from '../logic';
-import type { ScaffoldPackageManager, ScaffoldPackageDependency } from '../../package-manager/types';
+import type {
+    ScaffoldPackageManager,
+    ScaffoldPackageDependency,
+} from '../../package-manager/types';
 
 interface InstallDependenciesPayload {
     projectRoot: string;
@@ -28,11 +31,15 @@ const installSortedDependencies = async (
     manager: ScaffoldPackageManager,
     { normal, dev, peer }: SortedDependencies
 ) => {
-    await Promise.all([
-        normal.length ? installDependencies(dir, manager.construct.addExact, normal) : Promise.resolve(),
-        dev.length ? installDependencies(dir, manager.construct.addExactDev, dev) : Promise.resolve(),
-        peer.length ? installDependencies(dir, manager.construct.addExactPeer, peer) : Promise.resolve(),
-    ]);
+    normal.length
+        ? await installDependencies(dir, manager.construct.addExact, normal)
+        : Promise.resolve();
+    dev.length
+        ? await installDependencies(dir, manager.construct.addExactDev, dev)
+        : Promise.resolve();
+    peer.length
+        ? await installDependencies(dir, manager.construct.addExactPeer, peer)
+        : Promise.resolve();
 
     return normal.length + dev.length + peer.length;
 };
@@ -61,7 +68,11 @@ export default createAction<InstallDependenciesPayload>(
                 manager: manager.name,
             });
 
-            const amountInstalled = await installSortedDependencies(projectRoot, manager, sortedDependencies);
+            const amountInstalled = await installSortedDependencies(
+                projectRoot,
+                manager,
+                sortedDependencies
+            );
 
             return `installed ${amountInstalled} packages.`;
         } catch (err) {
