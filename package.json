@@ -1,7 +1,7 @@
 {
     "name": "@lindeneg/scaffold-core",
     "description": "a plopjs wrapper to build scaffolding cli's",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "repository": "git@github.com:lindeneg/scaffold-core.git",
     "homepage": "https://github.com/lindeneg/scaffold-core",
     "author": "Christian Lindeneg",
