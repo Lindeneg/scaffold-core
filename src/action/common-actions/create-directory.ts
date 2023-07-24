@@ -30,7 +30,9 @@ const createDirectory = async (dirPath: string, recursive = false) => {
 
 export default createAction<CreateDirectoryPayload>('create-directory', async (_, payload) => {
     if (Array.isArray(payload.dirPaths)) {
-        await Promise.all(payload.dirPaths.map((p) => createDirectory(p)));
+        for (const path of payload.dirPaths) {
+            await createDirectory(path);
+        }
         return 'successful';
     }
 
